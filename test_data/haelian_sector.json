@@ -1,0 +1,65 @@
+{
+    "sector_name": "Haelian",
+    "systems": [
+        {
+            "bodies": [
+                {
+                    "body_name": "Haelian",
+                    "color": "ffffff",
+                    "rel_loc": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ],
+            "color": "#ffffff",
+            "rel_loc": [
+                0.3,
+                1.0,
+                -9.7
+            ],
+            "system_name": "Haelian"
+        },
+        {
+            "bodies": [
+                {
+                    "body_name": "Haelian",
+                    "color": "ffffff",
+                    "rel_loc": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ],
+            "color": "#ffffff",
+            "rel_loc": [
+                1.0,
+                0.0,
+                1.0
+            ],
+            "system_name": "Lalnara"
+        },
+        {
+            "bodies": [
+                {
+                    "body_name": "Haelian",
+                    "color": "ffffff",
+                    "rel_loc": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ],
+            "color": "#ffffff",
+            "rel_loc": [
+                0.5,
+                -1.0,
+                -5.0
+            ],
+            "system_name": "Pamia"
+        }
+    ]
+}
