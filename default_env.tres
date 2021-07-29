@@ -4,3 +4,10 @@
 
 [resource]
 background_sky = SubResource( 1 )
+ambient_light_color = Color( 1, 1, 1, 1 )
+dof_blur_far_distance = 100.0
+dof_blur_far_transition = 20.0
+glow_intensity = 2.5
+glow_bloom = 0.2
+glow_blend_mode = 0
+glow_bicubic_upscale = true

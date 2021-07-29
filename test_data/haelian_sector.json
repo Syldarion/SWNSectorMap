@@ -13,7 +13,7 @@
                     ]
                 }
             ],
-            "color": "#ffffff",
+            "color": "73e2e7",
             "rel_loc": [
                 0.3,
                 1.0,
@@ -33,7 +33,7 @@
                     ]
                 }
             ],
-            "color": "#ffffff",
+            "color": "e26ede",
             "rel_loc": [
                 1.0,
                 0.0,
@@ -53,7 +53,7 @@
                     ]
                 }
             ],
-            "color": "#ffffff",
+            "color": "ffffff",
             "rel_loc": [
                 0.5,
                 -1.0,
@@ -61,5 +61,8 @@
             ],
             "system_name": "Pamia"
         }
+    ],
+    "connections": [
+        ["Haelian", "Lalnara"]
     ]
 }

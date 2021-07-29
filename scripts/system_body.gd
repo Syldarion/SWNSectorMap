@@ -5,6 +5,8 @@ extends Node
 # var a = 2
 # var b = "text"
 
+signal body_clicked
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -17,4 +19,4 @@ func _ready():
 
 
 func _on_ColiisionArea_input_event(camera, event, click_position, click_normal, shape_idx):
-	pass # Replace with function body.
+	emit_signal("body_clicked")

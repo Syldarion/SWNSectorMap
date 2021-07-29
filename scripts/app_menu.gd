@@ -16,12 +16,12 @@ func _on_LoadSectorButton_pressed():
 	var test_json = JSON.parse(file.get_as_text())
 	file.close()
 	GameData.parse_sector_data(test_json.result)
-	get_tree().change_scene("res://scenes/GalaxyMap.tscn")
+	get_tree().change_scene("res://scenes/SectorMap.tscn")
 
 func _on_Downloader_success(json):
 	sector_data_url_input.text = ""
 	GameData.parse_sector_data(json)
-	get_tree().change_scene("res://scenes/GalaxyMap.tscn")
+	get_tree().change_scene("res://scenes/SectorMap.tscn")
 
 func _on_Downloader_fail():
 	sector_data_url_input.text = ""

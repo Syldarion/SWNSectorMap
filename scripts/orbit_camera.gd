@@ -22,8 +22,8 @@ func _process(delta):
 	var move_input = get_movement_input()
 	
 	translate(move_input * move_speed * delta)
-	rotate_object_local(Vector3.UP, mouse_delta.x * mouse_sens * delta)
-	rotate_object_local(Vector3.RIGHT, mouse_delta.y * mouse_sens * delta)
+	rotate(Vector3.UP, -mouse_delta.x * mouse_sens * delta)
+	rotate_object_local(Vector3.RIGHT, -mouse_delta.y * mouse_sens * delta)
 	mouse_delta = Vector2()
 
 func get_movement_input():
@@ -43,3 +43,6 @@ func get_movement_input():
 		move_input.z -= 1
 	
 	return move_input
+
+func set_focus_position(position):
+	transform.origin = position

@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scripts/system_select_button.gd" type="Script" id=1]
+
+[node name="SystemSelectButton" type="Button"]
+margin_top = 45.0
+margin_right = 174.0
+margin_bottom = 65.0
+text = "System Name"
+script = ExtResource( 1 )

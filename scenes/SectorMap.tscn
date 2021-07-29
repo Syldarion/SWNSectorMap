@@ -1,0 +1,141 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://scenes/SectorSystem.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scripts/orbit_camera.gd" type="Script" id=2]
+[ext_resource path="res://scripts/sector_map.gd" type="Script" id=3]
+[ext_resource path="res://fonts/Reglo-Bold.otf" type="DynamicFontData" id=4]
+[ext_resource path="res://scenes/SystemSelectButton.tscn" type="PackedScene" id=5]
+
+[sub_resource type="Shader" id=5]
+code = "shader_type spatial;
+render_mode unshaded, cull_disabled;
+
+uniform float line_width;
+uniform float alpha_factor;
+uniform float fade_out_start;
+uniform float fade_out_end;
+
+varying vec3 vert_loc;
+
+void vertex() {
+	vert_loc = VERTEX;
+}
+
+void fragment() {
+	//vec2 coord = vert_loc.xy;
+	float coord = length(vert_loc.xy);
+	vec2 grid = vec2(abs(fract(coord - 0.5) - 0.5) / fwidth(coord));
+	float line = min(grid.x, grid.y);
+	ALBEDO = vec3(1.0 - min(line, 1.0));
+	float fade_out_factor = 1.0 - smoothstep(fade_out_start, fade_out_end, coord);
+	ALPHA = (1.0 - min(line, 1.0)) * alpha_factor * fade_out_factor;
+}"
+
+[sub_resource type="ShaderMaterial" id=6]
+shader = SubResource( 5 )
+shader_param/line_width = 0.4
+shader_param/alpha_factor = 0.25
+shader_param/fade_out_start = 30.0
+shader_param/fade_out_end = 50.0
+
+[sub_resource type="QuadMesh" id=4]
+material = SubResource( 6 )
+size = Vector2( 100, 100 )
+
+[sub_resource type="DynamicFont" id=1]
+size = 32
+use_filter = true
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 24
+use_filter = true
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=3]
+use_filter = true
+font_data = ExtResource( 4 )
+
+[node name="SectorMap" type="Spatial"]
+script = ExtResource( 3 )
+sector_system_scene = ExtResource( 1 )
+system_select_button_scene = ExtResource( 5 )
+
+[node name="SectorGrid" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0 )
+mesh = SubResource( 4 )
+material/0 = null
+
+[node name="CameraFocus" type="Spatial" parent="."]
+script = ExtResource( 2 )
+move_speed = 5.0
+mouse_sens = 1.0
+
+[node name="OrbitCamera" type="Camera" parent="CameraFocus"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.76574 )
+
+[node name="SystemsPanel" type="VBoxContainer" parent="."]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 210.0
+margin_bottom = 355.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SectorNameLabel" type="Label" parent="SystemsPanel"]
+margin_right = 200.0
+margin_bottom = 33.0
+custom_fonts/font = SubResource( 1 )
+text = "Sector Name"
+align = 1
+valign = 1
+
+[node name="HSeparator" type="HSeparator" parent="SystemsPanel"]
+margin_top = 37.0
+margin_right = 200.0
+margin_bottom = 41.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="SystemsPanel"]
+margin_top = 45.0
+margin_right = 200.0
+margin_bottom = 345.0
+rect_min_size = Vector2( 200, 300 )
+scroll_horizontal_enabled = false
+
+[node name="SystemButtonContainer" type="VBoxContainer" parent="SystemsPanel/ScrollContainer"]
+margin_right = 200.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 200, 100 )
+
+[node name="SelectedSystemPanel" type="VBoxContainer" parent="."]
+margin_left = 10.0
+margin_top = 390.0
+margin_right = 210.0
+margin_bottom = 590.0
+rect_min_size = Vector2( 200, 200 )
+alignment = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SelectedSystemNameLabel" type="Label" parent="SelectedSystemPanel"]
+margin_top = 140.0
+margin_right = 200.0
+margin_bottom = 165.0
+custom_fonts/font = SubResource( 2 )
+text = "No System Selected"
+autowrap = true
+
+[node name="HSeparator" type="HSeparator" parent="SelectedSystemPanel"]
+margin_top = 169.0
+margin_right = 200.0
+margin_bottom = 173.0
+
+[node name="ViewSystemButton" type="Button" parent="SelectedSystemPanel"]
+margin_top = 177.0
+margin_right = 200.0
+margin_bottom = 200.0
+custom_fonts/font = SubResource( 3 )
+disabled = true
+text = "View System"

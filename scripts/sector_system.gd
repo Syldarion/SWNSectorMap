@@ -1,7 +1,9 @@
 class_name SectorSystem
 extends Spatial
 
-onready var system_mesh = $SystemMesh
+signal system_clicked
+
+onready var system_mesh = $SystemMesh as MeshInstance
 
 var system_name
 var system_data # this is loaded from the main GameData json
@@ -23,6 +25,8 @@ func load_system_data(data):
 	system_name = data["system_name"]
 	rel_loc = Vector3(data["rel_loc"][0], data["rel_loc"][1], data["rel_loc"][2])
 	color = data["color"]
+	$SystemMesh.get_surface_material(0).albedo_color = Color(color)
 
 func _on_ColiisionArea_input_event(camera, event, click_position, click_normal, shape_idx):
-	pass # Replace with function body.
+	if event is InputEventMouseButton and not event.pressed:
+		emit_signal("system_clicked", system_name)
