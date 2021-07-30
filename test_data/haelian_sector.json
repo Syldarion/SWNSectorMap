@@ -2,67 +2,179 @@
     "sector_name": "Haelian",
     "systems": [
         {
-            "bodies": [
-                {
-                    "body_name": "Haelian",
-                    "color": "ffffff",
-                    "rel_loc": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ]
-                }
-            ],
+            "bodies": [],
             "color": "73e2e7",
-            "rel_loc": [
-                0.3,
-                1.0,
-                -9.7
-            ],
-            "system_name": "Haelian"
+            "rel_loc": [-4.0, 0.0, -3.0],
+            "system_name": "Ares",
+            "connected": ["Ezir"]
         },
         {
-            "bodies": [
-                {
-                    "body_name": "Haelian",
-                    "color": "ffffff",
-                    "rel_loc": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ]
-                }
-            ],
+            "bodies": [],
             "color": "e26ede",
-            "rel_loc": [
-                1.0,
-                0.0,
-                1.0
-            ],
-            "system_name": "Lalnara"
+            "rel_loc": [-1.0, 0.0, -3.0],
+            "system_name": "Noboros",
+            "connected": ["Pecarro"]
         },
         {
-            "bodies": [
-                {
-                    "body_name": "Haelian",
-                    "color": "ffffff",
-                    "rel_loc": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ]
-                }
-            ],
+            "bodies": [],
             "color": "ffffff",
-            "rel_loc": [
-                0.5,
-                -1.0,
-                -5.0
-            ],
-            "system_name": "Pamia"
+            "rel_loc": [2.0, 0.0, -3.0],
+            "system_name": "Bardus",
+            "connected": ["Hibarth", "Iorus"]
+        },
+        {
+            "bodies": [],
+            "color": "ffffff",
+            "rel_loc": [5.0, 0.0, -3.0],
+            "system_name": "Beryllion",
+            "connected": ["Aphys"]
+        },
+        {
+            "bodies": [],
+            "color": "ffffff",
+            "rel_loc": [0.0, 0.0, -2.0],
+            "system_name": "Pecarro",
+            "connected": ["Noboros", "Hibarth"]
+        },
+        {
+            "bodies": [],
+            "color": "73e2e7",
+            "rel_loc": [1.0, 0.0, -2.0],
+            "system_name": "Hibarth",
+            "connected": ["Bardus", "Pecarro"]
+        },
+        {
+            "bodies": [],
+            "color": "e26ede",
+            "rel_loc": [-2.0, 0.0, -2.0],
+            "system_name": "Ezir",
+            "connected": ["Ares", "Zabutov"]
+        },
+        {
+            "bodies": [],
+            "color": "ffffff",
+            "rel_loc": [3.0, 0.0, -2.0],
+            "system_name": "Iorus",
+            "connected": ["Bardus", "Patrosky"]
+        },
+        {
+            "bodies": [],
+            "color": "ffffff",
+            "rel_loc": [4.0, 0.0, -2.0],
+            "system_name": "Patrosky",
+            "connected": ["Iorus", "Aphys", "Wademark"]
+        },
+        {
+            "bodies": [],
+            "color": "ffffff",
+            "rel_loc": [5.0, 0.0, -2.0],
+            "system_name": "Aphys",
+            "connected": ["Beryllion", "Patrosky", "Wademark"]
+        },
+        {
+            "bodies": [],
+            "color": "73e2e7",
+            "rel_loc": [-3.0, 0.0, -1.0],
+            "system_name": "Zabutov",
+            "connected": ["Ezir", "Anmol"]
+        },
+        {
+            "bodies": [],
+            "color": "e26ede",
+            "rel_loc": [4.0, 0.0, -1.0],
+            "system_name": "Wademark",
+            "connected": ["Patrosky", "Aphys", "Sangar"]
+        },
+        {
+            "bodies": [],
+            "color": "ffffff",
+            "rel_loc": [-4.0, 0.0, 0.0],
+            "system_name": "Anmol",
+            "connected": ["Zabutov", "Rian"]
+        },
+        {
+            "bodies": [],
+            "color": "ffffff",
+            "rel_loc": [0.0, 0.0, 0.0],
+            "system_name": "Haelian",
+            "connected": ["Yibos", "Lalnara"]
+        },
+        {
+            "bodies": [],
+            "color": "ffffff",
+            "rel_loc": [3.0, 0.0, 0.0],
+            "system_name": "Sangar",
+            "connected": ["Wademark", "Pamia"]
+        },
+        {
+            "bodies": [],
+            "color": "73e2e7",
+            "rel_loc": [-3.0, 0.0, 1.0],
+            "system_name": "Rian",
+            "connected": ["Anmol", "Yibos", "Ritva"]
+        },
+        {
+            "bodies": [],
+            "color": "e26ede",
+            "rel_loc": [-1.0, 0.0, 1.0],
+            "system_name": "Yibos",
+            "connected": ["Haelian", "Rian", "Yibos", "Elemence"]
+        },
+        {
+            "bodies": [],
+            "color": "ffffff",
+            "rel_loc": [0.0, 0.0, 1.0],
+            "system_name": "Lalnara",
+            "connected": ["Haelian", "Yibos", "Pamia"]
+        },
+        {
+            "bodies": [],
+            "color": "ffffff",
+            "rel_loc": [2.0, 0.0, 1.0],
+            "system_name": "Pamia",
+            "connected": ["Sangar", "Lalnara", "Chakrus"]
+        },
+        {
+            "bodies": [],
+            "color": "ffffff",
+            "rel_loc": [-2.0, 0.0, 2.0],
+            "system_name": "Ritva",
+            "connected": ["Rian", "Elemence", "Calderon"]
+        },
+        {
+            "bodies": [],
+            "color": "73e2e7",
+            "rel_loc": [-1.0, 0.0, 2.0],
+            "system_name": "Elemence",
+            "connected": ["Yibos", "Ritva", "Calderon", "Marah"]
+        },
+        {
+            "bodies": [],
+            "color": "e26ede",
+            "rel_loc": [1.0, 0.0, 2.0],
+            "system_name": "Chakrus",
+            "connected": ["Pamia", "Neshan"]
+        },
+        {
+            "bodies": [],
+            "color": "ffffff",
+            "rel_loc": [-1.0, 0.0, 3.0],
+            "system_name": "Calderon",
+            "connected": ["Ritva", "Elemence", "Marah"]
+        },
+        {
+            "bodies": [],
+            "color": "ffffff",
+            "rel_loc": [0.0, 0.0, 3.0],
+            "system_name": "Marah",
+            "connected": ["Elemence", "Calderon"]
+        },
+        {
+            "bodies": [],
+            "color": "ffffff",
+            "rel_loc": [2.0, 0.0, 3.0],
+            "system_name": "Neshan",
+            "connected": ["Chakrus"]
         }
-    ],
-    "connections": [
-        ["Haelian", "Lalnara"]
     ]
 }

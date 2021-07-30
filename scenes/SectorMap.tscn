@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://scenes/SectorSystem.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/orbit_camera.gd" type="Script" id=2]
@@ -6,7 +6,7 @@
 [ext_resource path="res://fonts/Reglo-Bold.otf" type="DynamicFontData" id=4]
 [ext_resource path="res://scenes/SystemSelectButton.tscn" type="PackedScene" id=5]
 
-[sub_resource type="Shader" id=5]
+[sub_resource type="Shader" id=1]
 code = "shader_type spatial;
 render_mode unshaded, cull_disabled;
 
@@ -22,37 +22,53 @@ void vertex() {
 }
 
 void fragment() {
-	//vec2 coord = vert_loc.xy;
-	float coord = length(vert_loc.xy);
+	vec2 coord = vert_loc.xy;
+	float dist = length(vert_loc.xy);
 	vec2 grid = vec2(abs(fract(coord - 0.5) - 0.5) / fwidth(coord));
 	float line = min(grid.x, grid.y);
 	ALBEDO = vec3(1.0 - min(line, 1.0));
-	float fade_out_factor = 1.0 - smoothstep(fade_out_start, fade_out_end, coord);
+	float fade_out_factor = 1.0 - smoothstep(fade_out_start, fade_out_end, dist);
 	ALPHA = (1.0 - min(line, 1.0)) * alpha_factor * fade_out_factor;
 }"
 
-[sub_resource type="ShaderMaterial" id=6]
-shader = SubResource( 5 )
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
 shader_param/line_width = 0.4
-shader_param/alpha_factor = 0.25
-shader_param/fade_out_start = 30.0
-shader_param/fade_out_end = 50.0
+shader_param/alpha_factor = 0.1
+shader_param/fade_out_start = 6.0
+shader_param/fade_out_end = 10.0
 
-[sub_resource type="QuadMesh" id=4]
-material = SubResource( 6 )
-size = Vector2( 100, 100 )
+[sub_resource type="QuadMesh" id=3]
+material = SubResource( 2 )
+size = Vector2( 20, 20 )
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="SpatialMaterial" id=9]
+emission_enabled = true
+emission = Color( 1, 1, 1, 1 )
+emission_energy = 3.01
+emission_operator = 0
+emission_on_uv2 = false
+
+[sub_resource type="DynamicFont" id=4]
 size = 32
 use_filter = true
 font_data = ExtResource( 4 )
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="DynamicFont" id=5]
 size = 24
 use_filter = true
 font_data = ExtResource( 4 )
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="DynamicFont" id=6]
+use_filter = true
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=7]
+size = 24
+use_filter = true
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=8]
 use_filter = true
 font_data = ExtResource( 4 )
 
@@ -62,53 +78,74 @@ sector_system_scene = ExtResource( 1 )
 system_select_button_scene = ExtResource( 5 )
 
 [node name="SectorGrid" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0 )
-mesh = SubResource( 4 )
+transform = Transform( 10, 0, 0, 0, -4.37114e-07, 1, 0, -10, -4.37114e-08, 0, 0, 0 )
+mesh = SubResource( 3 )
 material/0 = null
 
+[node name="PathRenderer" type="ImmediateGeometry" parent="."]
+material_override = SubResource( 9 )
+
 [node name="CameraFocus" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0 )
 script = ExtResource( 2 )
 move_speed = 5.0
 mouse_sens = 1.0
+zoom_speed = 1.0
+zoom_min = 4.0
+zoom_max = 10.0
 
 [node name="OrbitCamera" type="Camera" parent="CameraFocus"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.76574 )
 
-[node name="SystemsPanel" type="VBoxContainer" parent="."]
+[node name="SectorSidePanel" type="VBoxContainer" parent="."]
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 210.0
-margin_bottom = 355.0
+margin_bottom = 625.0
+rect_min_size = Vector2( 200, 580 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SectorNameLabel" type="Label" parent="SystemsPanel"]
-margin_right = 200.0
+[node name="SystemsPanel" type="VBoxContainer" parent="SectorSidePanel"]
+margin_right = 212.0
+margin_bottom = 253.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SectorNameLabel" type="Label" parent="SectorSidePanel/SystemsPanel"]
+margin_right = 212.0
 margin_bottom = 33.0
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 4 )
 text = "Sector Name"
 align = 1
 valign = 1
 
-[node name="HSeparator" type="HSeparator" parent="SystemsPanel"]
+[node name="HSeparator" type="HSeparator" parent="SectorSidePanel/SystemsPanel"]
 margin_top = 37.0
-margin_right = 200.0
+margin_right = 212.0
 margin_bottom = 41.0
 
-[node name="ScrollContainer" type="ScrollContainer" parent="SystemsPanel"]
+[node name="ScrollContainer" type="ScrollContainer" parent="SectorSidePanel/SystemsPanel"]
 margin_top = 45.0
-margin_right = 200.0
-margin_bottom = 345.0
-rect_min_size = Vector2( 200, 300 )
+margin_right = 212.0
+margin_bottom = 245.0
+rect_min_size = Vector2( 200, 200 )
 scroll_horizontal_enabled = false
 
-[node name="SystemButtonContainer" type="VBoxContainer" parent="SystemsPanel/ScrollContainer"]
+[node name="SystemButtonContainer" type="VBoxContainer" parent="SectorSidePanel/SystemsPanel/ScrollContainer"]
 margin_right = 200.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 200, 100 )
 
-[node name="SelectedSystemPanel" type="VBoxContainer" parent="."]
+[node name="HSeparator2" type="HSeparator" parent="SectorSidePanel/SystemsPanel"]
+margin_top = 249.0
+margin_right = 212.0
+margin_bottom = 253.0
+
+[node name="SelectedSystemPanel" type="VBoxContainer" parent="SectorSidePanel"]
+visible = false
 margin_left = 10.0
 margin_top = 390.0
 margin_right = 210.0
@@ -119,23 +156,89 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SelectedSystemNameLabel" type="Label" parent="SelectedSystemPanel"]
+[node name="SelectedSystemNameLabel" type="Label" parent="SectorSidePanel/SelectedSystemPanel"]
 margin_top = 140.0
 margin_right = 200.0
 margin_bottom = 165.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 5 )
 text = "No System Selected"
 autowrap = true
 
-[node name="HSeparator" type="HSeparator" parent="SelectedSystemPanel"]
+[node name="HSeparator" type="HSeparator" parent="SectorSidePanel/SelectedSystemPanel"]
 margin_top = 169.0
 margin_right = 200.0
 margin_bottom = 173.0
 
-[node name="ViewSystemButton" type="Button" parent="SelectedSystemPanel"]
+[node name="ViewSystemButton" type="Button" parent="SectorSidePanel/SelectedSystemPanel"]
 margin_top = 177.0
 margin_right = 200.0
 margin_bottom = 200.0
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 6 )
 disabled = true
 text = "View System"
+
+[node name="RoutePanel" type="VBoxContainer" parent="SectorSidePanel"]
+margin_top = 257.0
+margin_right = 212.0
+margin_bottom = 468.0
+grow_vertical = 0
+rect_min_size = Vector2( 200, 200 )
+alignment = 2
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="RouteHeaderLabel" type="Label" parent="SectorSidePanel/RoutePanel"]
+margin_right = 212.0
+margin_bottom = 25.0
+custom_fonts/font = SubResource( 7 )
+text = "Spike Drill Plotter"
+
+[node name="HSeparator" type="HSeparator" parent="SectorSidePanel/RoutePanel"]
+margin_top = 29.0
+margin_right = 212.0
+margin_bottom = 33.0
+
+[node name="FromLabel" type="Label" parent="SectorSidePanel/RoutePanel"]
+margin_top = 37.0
+margin_right = 212.0
+margin_bottom = 54.0
+custom_fonts/font = SubResource( 8 )
+text = "From"
+
+[node name="FromOptionButton" type="OptionButton" parent="SectorSidePanel/RoutePanel"]
+margin_top = 58.0
+margin_right = 212.0
+margin_bottom = 81.0
+custom_fonts/font = SubResource( 8 )
+
+[node name="ToLabel" type="Label" parent="SectorSidePanel/RoutePanel"]
+margin_top = 85.0
+margin_right = 212.0
+margin_bottom = 102.0
+custom_fonts/font = SubResource( 8 )
+text = "To"
+
+[node name="ToOptionButton" type="OptionButton" parent="SectorSidePanel/RoutePanel"]
+margin_top = 106.0
+margin_right = 212.0
+margin_bottom = 129.0
+custom_fonts/font = SubResource( 8 )
+
+[node name="PlotResultHeaderLabel" type="Label" parent="SectorSidePanel/RoutePanel"]
+margin_top = 133.0
+margin_right = 212.0
+margin_bottom = 150.0
+custom_fonts/font = SubResource( 8 )
+text = "Route"
+align = 1
+
+[node name="PlotResultLabel" type="Label" parent="SectorSidePanel/RoutePanel"]
+margin_top = 154.0
+margin_right = 212.0
+margin_bottom = 211.0
+custom_fonts/font = SubResource( 8 )
+text = "1. System to System: 3 hexes
+2. System to System: 1 hex
+Total: 4 Hexes"
