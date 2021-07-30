@@ -42,33 +42,33 @@ shader_param/fade_out_end = 10.0
 material = SubResource( 2 )
 size = Vector2( 20, 20 )
 
-[sub_resource type="SpatialMaterial" id=9]
+[sub_resource type="SpatialMaterial" id=4]
 emission_enabled = true
 emission = Color( 1, 1, 1, 1 )
 emission_energy = 3.01
 emission_operator = 0
 emission_on_uv2 = false
 
-[sub_resource type="DynamicFont" id=4]
+[sub_resource type="DynamicFont" id=5]
 size = 32
 use_filter = true
 font_data = ExtResource( 4 )
 
-[sub_resource type="DynamicFont" id=5]
-size = 24
-use_filter = true
-font_data = ExtResource( 4 )
-
 [sub_resource type="DynamicFont" id=6]
+size = 24
 use_filter = true
 font_data = ExtResource( 4 )
 
 [sub_resource type="DynamicFont" id=7]
-size = 24
 use_filter = true
 font_data = ExtResource( 4 )
 
 [sub_resource type="DynamicFont" id=8]
+size = 24
+use_filter = true
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=9]
 use_filter = true
 font_data = ExtResource( 4 )
 
@@ -76,6 +76,9 @@ font_data = ExtResource( 4 )
 script = ExtResource( 3 )
 sector_system_scene = ExtResource( 1 )
 system_select_button_scene = ExtResource( 5 )
+line_segment_length = 1.0
+line_spacing_length = 1.0
+line_segment_speed = 5.0
 
 [node name="SectorGrid" type="MeshInstance" parent="."]
 transform = Transform( 10, 0, 0, 0, -4.37114e-07, 1, 0, -10, -4.37114e-08, 0, 0, 0 )
@@ -83,16 +86,16 @@ mesh = SubResource( 3 )
 material/0 = null
 
 [node name="PathRenderer" type="ImmediateGeometry" parent="."]
-material_override = SubResource( 9 )
+material_override = SubResource( 4 )
 
 [node name="CameraFocus" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0 )
 script = ExtResource( 2 )
-move_speed = 5.0
+move_speed = 10.0
 mouse_sens = 1.0
 zoom_speed = 1.0
 zoom_min = 4.0
-zoom_max = 10.0
+zoom_max = 20.0
 
 [node name="OrbitCamera" type="Camera" parent="CameraFocus"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.76574 )
@@ -108,28 +111,28 @@ __meta__ = {
 }
 
 [node name="SystemsPanel" type="VBoxContainer" parent="SectorSidePanel"]
-margin_right = 212.0
+margin_right = 200.0
 margin_bottom = 253.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="SectorNameLabel" type="Label" parent="SectorSidePanel/SystemsPanel"]
-margin_right = 212.0
+margin_right = 200.0
 margin_bottom = 33.0
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 5 )
 text = "Sector Name"
 align = 1
 valign = 1
 
 [node name="HSeparator" type="HSeparator" parent="SectorSidePanel/SystemsPanel"]
 margin_top = 37.0
-margin_right = 212.0
+margin_right = 200.0
 margin_bottom = 41.0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="SectorSidePanel/SystemsPanel"]
 margin_top = 45.0
-margin_right = 212.0
+margin_right = 200.0
 margin_bottom = 245.0
 rect_min_size = Vector2( 200, 200 )
 scroll_horizontal_enabled = false
@@ -141,7 +144,7 @@ rect_min_size = Vector2( 200, 100 )
 
 [node name="HSeparator2" type="HSeparator" parent="SectorSidePanel/SystemsPanel"]
 margin_top = 249.0
-margin_right = 212.0
+margin_right = 200.0
 margin_bottom = 253.0
 
 [node name="SelectedSystemPanel" type="VBoxContainer" parent="SectorSidePanel"]
@@ -160,7 +163,7 @@ __meta__ = {
 margin_top = 140.0
 margin_right = 200.0
 margin_bottom = 165.0
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 6 )
 text = "No System Selected"
 autowrap = true
 
@@ -173,14 +176,15 @@ margin_bottom = 173.0
 margin_top = 177.0
 margin_right = 200.0
 margin_bottom = 200.0
-custom_fonts/font = SubResource( 6 )
+focus_mode = 0
+custom_fonts/font = SubResource( 7 )
 disabled = true
 text = "View System"
 
 [node name="RoutePanel" type="VBoxContainer" parent="SectorSidePanel"]
 margin_top = 257.0
-margin_right = 212.0
-margin_bottom = 468.0
+margin_right = 200.0
+margin_bottom = 559.0
 grow_vertical = 0
 rect_min_size = Vector2( 200, 200 )
 alignment = 2
@@ -190,55 +194,74 @@ __meta__ = {
 }
 
 [node name="RouteHeaderLabel" type="Label" parent="SectorSidePanel/RoutePanel"]
-margin_right = 212.0
+margin_right = 200.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 7 )
+custom_fonts/font = SubResource( 8 )
 text = "Spike Drill Plotter"
 
 [node name="HSeparator" type="HSeparator" parent="SectorSidePanel/RoutePanel"]
 margin_top = 29.0
-margin_right = 212.0
+margin_right = 200.0
 margin_bottom = 33.0
 
 [node name="FromLabel" type="Label" parent="SectorSidePanel/RoutePanel"]
 margin_top = 37.0
-margin_right = 212.0
+margin_right = 200.0
 margin_bottom = 54.0
-custom_fonts/font = SubResource( 8 )
+custom_fonts/font = SubResource( 9 )
 text = "From"
 
 [node name="FromOptionButton" type="OptionButton" parent="SectorSidePanel/RoutePanel"]
 margin_top = 58.0
-margin_right = 212.0
+margin_right = 200.0
 margin_bottom = 81.0
-custom_fonts/font = SubResource( 8 )
+focus_mode = 0
+custom_fonts/font = SubResource( 9 )
 
 [node name="ToLabel" type="Label" parent="SectorSidePanel/RoutePanel"]
 margin_top = 85.0
-margin_right = 212.0
+margin_right = 200.0
 margin_bottom = 102.0
-custom_fonts/font = SubResource( 8 )
+custom_fonts/font = SubResource( 9 )
 text = "To"
 
 [node name="ToOptionButton" type="OptionButton" parent="SectorSidePanel/RoutePanel"]
 margin_top = 106.0
-margin_right = 212.0
+margin_right = 200.0
 margin_bottom = 129.0
-custom_fonts/font = SubResource( 8 )
+focus_mode = 0
+custom_fonts/font = SubResource( 9 )
+
+[node name="SpikeDriveLabel" type="Label" parent="SectorSidePanel/RoutePanel"]
+margin_top = 133.0
+margin_right = 200.0
+margin_bottom = 150.0
+custom_fonts/font = SubResource( 9 )
+text = "Spike Drive Rating"
+
+[node name="SpikeDriveOptionButton" type="OptionButton" parent="SectorSidePanel/RoutePanel"]
+margin_top = 154.0
+margin_right = 200.0
+margin_bottom = 177.0
+focus_mode = 0
+custom_fonts/font = SubResource( 9 )
 
 [node name="PlotResultHeaderLabel" type="Label" parent="SectorSidePanel/RoutePanel"]
-margin_top = 133.0
-margin_right = 212.0
-margin_bottom = 150.0
-custom_fonts/font = SubResource( 8 )
+margin_top = 181.0
+margin_right = 200.0
+margin_bottom = 198.0
+custom_fonts/font = SubResource( 9 )
 text = "Route"
 align = 1
 
-[node name="PlotResultLabel" type="Label" parent="SectorSidePanel/RoutePanel"]
-margin_top = 154.0
-margin_right = 212.0
-margin_bottom = 211.0
-custom_fonts/font = SubResource( 8 )
-text = "1. System to System: 3 hexes
-2. System to System: 1 hex
-Total: 4 Hexes"
+[node name="ScrollContainer" type="ScrollContainer" parent="SectorSidePanel/RoutePanel"]
+margin_top = 202.0
+margin_right = 200.0
+margin_bottom = 302.0
+rect_min_size = Vector2( 200, 100 )
+
+[node name="PlotResultLabel" type="Label" parent="SectorSidePanel/RoutePanel/ScrollContainer"]
+margin_right = 120.0
+margin_bottom = 17.0
+custom_fonts/font = SubResource( 9 )
+text = "No Route Selected"

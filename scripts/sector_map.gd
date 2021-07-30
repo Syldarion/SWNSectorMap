@@ -3,25 +3,37 @@ extends Node
 export(PackedScene) var sector_system_scene
 export(PackedScene) var system_select_button_scene
 
+export(float) var line_segment_length
+export(float) var line_spacing_length
+export(float) var line_segment_speed
+
 onready var system_name_label = $SectorSidePanel/SystemsPanel/SectorNameLabel
 onready var system_button_container = $SectorSidePanel/SystemsPanel/ScrollContainer/SystemButtonContainer
 onready var selected_system_name_label = $SectorSidePanel/SelectedSystemPanel/SelectedSystemNameLabel
 onready var view_system_button = $SectorSidePanel/SelectedSystemPanel/ViewSystemButton
 onready var route_from_button = $SectorSidePanel/RoutePanel/FromOptionButton
 onready var route_to_button = $SectorSidePanel/RoutePanel/ToOptionButton
-onready var plot_result_label = $SectorSidePanel/RoutePanel/PlotResultLabel
+onready var plot_result_label = $SectorSidePanel/RoutePanel/ScrollContainer/PlotResultLabel
+onready var spike_drive_rating_button = $SectorSidePanel/RoutePanel/SpikeDriveOptionButton
 onready var camera_focus = $CameraFocus
 onready var path_renderer = $PathRenderer
 
 var systems = {}
 var selected_system = null
 
+var line_segment_offset = 0.0
+var current_path = null
+var total_segment_length = 0.0
+var selected_drive_rating = 1
+
 func _ready():
 	view_system_button.connect("pressed", self, "_on_ViewSystemButton_pressed")
 	route_from_button.connect("item_selected", self, "_on_RouteButtons_changed")
 	route_to_button.connect("item_selected", self, "_on_RouteButtons_changed")
+	spike_drive_rating_button.connect("item_selected", self, "_on_SpikeDriveRating_changed")
 	
 	populate_sector_map()
+	populate_spike_drive_dropdown()
 
 func populate_sector_map():
 	var sector_data = GameData.sector_data_json
@@ -45,10 +57,16 @@ func populate_sector_map():
 		route_from_button.add_item(new_system.system_name)
 		route_to_button.add_item(new_system.system_name)
 
+func populate_spike_drive_dropdown():
+	for i in range(6):
+		spike_drive_rating_button.add_item(str(i + 1))
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _process(delta):
+	total_segment_length = line_segment_length + line_spacing_length
+	line_segment_offset += line_segment_speed * delta
+	if line_segment_offset > total_segment_length:
+		line_segment_offset -= total_segment_length
+	draw_path(current_path)
 
 func _unhandled_input(event):
 	if event is InputEventMouseButton and not event.pressed:
@@ -74,8 +92,12 @@ func _on_RouteButtons_changed(index):
 	var route_from_selection = route_from_button.get_item_text(from_selected)
 	var route_to_selection = route_to_button.get_item_text(to_selected)
 	
-	var shortest_path = find_path(route_from_selection, route_to_selection)
-	draw_path(shortest_path)
+	current_path = find_path(route_from_selection, route_to_selection)
+	set_path_text()
+
+func _on_SpikeDriveRating_changed(index):
+	selected_drive_rating = int(spike_drive_rating_button.get_item_text(index))
+	set_path_text()
 
 func focus_on_system(system_name):
 	if not system_name in systems:
@@ -128,18 +150,45 @@ func find_path(start_system, end_system):
 	
 	return path
 
+# TODO: Figure out how to make this move
 func draw_path(path):
-	if len(path) <= 1:
+	if path == null:
 		return
+	var path_len = len(path)
 	
 	path_renderer.clear()
-	path_renderer.begin(Mesh.PRIMITIVE_LINE_STRIP)
+	
+	if path_len <= 1:
+		return
+	
+	path_renderer.begin(Mesh.PRIMITIVE_LINES)
 	
 	var step_uv = 1 / len(path) - 1
 	var index = 0
 	
-	for system_name in path:
-		path_renderer.set_uv(Vector2(step_uv * index, 0.0))
-		index += 1
-		path_renderer.add_vertex(systems[system_name].transform.origin)
+	for i in range(path_len - 1):
+		var point_a = systems[path[i]].transform.origin
+		var point_b = systems[path[i + 1]].transform.origin
+		var dir = (point_b - point_a).normalized()
+		var segments = (point_b - point_a).length() / total_segment_length
+		
+		for s in range(segments):
+			path_renderer.add_vertex(point_a + dir * (s * total_segment_length + line_segment_offset))
+			path_renderer.add_vertex(point_a + dir * (s * total_segment_length + line_segment_length + line_segment_offset))
+			
 	path_renderer.end()
+
+func set_path_text():
+	var path_string = ""
+	var path_len = len(current_path)
+	
+	for i in range(path_len - 1):
+		var start = current_path[i]
+		var end = current_path[i + 1]
+		var start_system = systems[start]
+		var end_system = systems[end]
+		var distance = (end_system.rel_loc - start_system.rel_loc).length() / 10.0
+		var time_days = (6.0 / selected_drive_rating) * distance
+		path_string += "%s to %s: %.1fhx (%.1fd)\n" % [start, end, distance, time_days]
+	
+	plot_result_label.text = path_string

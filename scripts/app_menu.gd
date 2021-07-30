@@ -10,17 +10,14 @@ func _ready():
 
 func _on_LoadSectorButton_pressed():
 	status_label.text = "Loading data file..."
-	# SectorDataDownloader.request_json_file(sector_data_url_input.text)
-	var file = File.new()
-	file.open("res://test_data/haelian_sector.json", File.READ)
-	var test_json = JSON.parse(file.get_as_text())
-	file.close()
-	GameData.parse_sector_data(test_json.result)
-	get_tree().change_scene("res://scenes/SectorMap.tscn")
+	SectorDataDownloader.request_json_file(sector_data_url_input.text)
 
 func _on_Downloader_success(json):
-	sector_data_url_input.text = ""
-	GameData.parse_sector_data(json)
+	var file = File.new()
+	file.open("user://sector_data.json", File.READ)
+	var file_json = JSON.parse(file.get_as_text())
+	file.close()
+	GameData.parse_sector_data(file_json.result)
 	get_tree().change_scene("res://scenes/SectorMap.tscn")
 
 func _on_Downloader_fail():
