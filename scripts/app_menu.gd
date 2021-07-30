@@ -23,3 +23,7 @@ func _on_Downloader_success(json):
 func _on_Downloader_fail():
 	sector_data_url_input.text = ""
 	status_label.text = "Failed to download data file."
+
+
+func _on_PasteButton_pressed():
+	sector_data_url_input.text = OS.clipboard
